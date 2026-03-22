@@ -1,0 +1,100 @@
+1. Structure of an HTML Page
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Page</title>
+</head>
+<body>
+  <h1>Hello Manoj</h1>
+  <p>This is my first webpage</p>
+</body>
+</html>
+🧠 Explanation
+<!DOCTYPE html> → tells browser this is HTML5
+<html> → root element
+<head> → metadata (title, CSS, etc.)
+<body> → visible content
+🔹 2. Headings
+<h1>Main Heading</h1>
+<h2>Sub Heading</h2>
+<h3>Smaller Heading</h3>
+✅ Key Points
+<h1> → most important
+<h6> → least important
+Used for SEO + structure
+🔹 3. Paragraph
+<p>This is a paragraph.</p>
+
+👉 Used for normal text content
+
+🔹 4. Links
+<a href="https://google.com">Go to Google</a>
+🔥 Important attributes
+href → destination
+target="_blank" → open in new tab
+🔹 5. Images
+<img src="image.jpg" alt="description" width="200">
+🧠 Key Points
+src → image path
+alt → important for accessibility
+width/height → optional
+🔹 6. Lists
+👉 Unordered List
+<ul>
+  <li>Apple</li>
+  <li>Banana</li>
+</ul>
+👉 Ordered List
+<ol>
+  <li>Step 1</li>
+  <li>Step 2</li>
+</ol>
+🔹 7. Buttons
+<button>Click Me</button>
+
+👉 Used for user interaction
+
+🔹 8. Forms (Very Important)
+<form>
+  <input type="text" placeholder="Enter name">
+  <input type="email" placeholder="Enter email">
+  <button type="submit">Submit</button>
+</form>
+🧠 Common Input Types
+text
+email
+password
+number
+checkbox
+radio
+⚡ Mini Example (Combine Everything)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Practice</title>
+</head>
+<body>
+
+  <h1>Welcome Manoj</h1>
+
+  <p>This is my page</p>
+
+  <a href="https://google.com">Visit Google</a>
+
+  <img src="img.jpg" alt="sample">
+
+  <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>
+
+  <form>
+    <input type="text" placeholder="Name">
+    <button>Submit</button>
+  </form>
+
+</body>
+</html>
+🧠 Simple Definition
+
+👉 HTML = Structure (skeleton) of a webpage
