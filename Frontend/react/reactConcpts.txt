@@ -1,0 +1,26 @@
+<> </> A Fragment lets me group multiple elements without adding an extra div in the DOM.
+👉 Fragment = group elements
+👉 Fragment + key = fix .map() problem
+👉 Fragment + ref = control multiple elements (advanced)
+🎯 Benefits
+✅ Cleaner DOM (no extra div)
+✅ Better performance (less nodes)
+✅ Avoid CSS/layout issues
+✅ Required when returning multiple elements
+
+
+
+
+
+
+
+
+
+Hooks:
+Usestate :
+understood state update +
+previous state -
+conditional update ?prev:1
+arithmetic update. +*-
+
+

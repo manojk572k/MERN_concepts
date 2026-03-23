@@ -1,0 +1,185 @@
+1️⃣ What is CSS
+
+CSS = styling layer of web
+
+HTML → structure
+CSS → design / layout
+JS → behavior
+2️⃣ CSS Syntax
+
+Basic format:
+
+selector {
+  property: value;
+}
+
+Example:
+
+h1 {
+  color: red;
+}
+3️⃣ Selectors (How CSS targets elements)
+Types:
+Element → p, h1
+Class → .box
+ID → #main
+Universal → *
+Group → h1, p
+Descendant → div p
+
+Example:
+
+.box {
+  background: blue;
+}
+4️⃣ Box Model (Very Important)
+
+Every element = box
+
+| Margin |
+| Border |
+| Padding |
+| Content |
+
+Content → Padding → Border → Margin
+
+Example:
+
+div {
+  margin: 10px;
+  padding: 20px;
+  border: 2px solid black;
+}
+
+👉 Controls spacing and layout
+
+5️⃣ Units
+px → fixed
+% → relative
+rem → root-based
+em → parent-based
+
+👉 Use rem for scalable design
+1 rem = 16px
+
+6️⃣ Display Property
+
+Controls layout behavior
+
+block → full width (div)
+inline → only content (span)
+inline-block → mix of both
+none → hide element
+7️⃣ Flexbox (Most Important)
+
+Used for 1D layout (row or column)
+
+Main properties:
+
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: row;
+
+Concepts:
+
+Main axis
+Cross axis
+Alignment
+Spacing
+8️⃣ Grid
+
+Used for 2D layout (rows + columns)
+
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+
+👉 Best for complex layouts
+
+9️⃣ Positioning
+
+Controls element placement
+
+static (default)
+relative
+absolute
+fixed
+sticky
+
+Example:
+
+.box {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+🔟 Colors & Background
+color: red;
+background-color: black;
+
+Types:
+
+Named → red
+HEX → #ff0000
+RGB → rgb(255,0,0)
+1️⃣1️⃣ Text & Font
+font-size: 16px;
+font-weight: bold;
+text-align: center;
+1️⃣2️⃣ Responsive Design
+
+Make UI work on all devices
+
+@media (max-width: 768px) {
+  body {
+    background: red;
+  }
+}
+
+Concepts:
+
+Breakpoints
+Mobile-first
+1️⃣3️⃣ CSS Variables
+
+Reusable values
+
+:root {
+  --main-color: blue;
+}
+
+h1 {
+  color: var(--main-color);
+}
+1️⃣4️⃣ Overflow
+overflow: hidden;
+overflow: scroll;
+1️⃣5️⃣ Z-Index
+
+Controls stacking
+
+z-index: 10;
+
+Higher value → on top
+
+1️⃣6️⃣ Visibility vs Display
+display: none → removed from layout
+visibility: hidden → invisible but space remains
+
+
+////////////////////////////////////////
+
+block → layouts (div, sections)
+inline → text (span, links)
+inline-block → buttons, cards (before flexbox)
+none → toggling UI (menus, modals)
+
+properties:
+.card {
+  width: 80%;          /* responsive width */
+  padding: 1.5rem;     /* scalable spacing */
+  font-size: 1rem;     /* consistent text */
+  border: 1px solid;   /* px for precision */
+}
+
