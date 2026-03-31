@@ -1,0 +1,664 @@
+1. React
+
+Definition
+React is a JavaScript library for building user interfaces out of components. React’s model is based on describing UI from data, then re-rendering when props, state, or context change. React docs also describe components as expected to behave like pure functions of inputs.
+
+Why use it
+React helps build complex UIs by splitting them into reusable components and updating only the changed parts of the UI efficiently.
+
+Applications
+Dashboards, e-commerce sites, admin panels, social apps, form-heavy apps, single-page applications, and component-based design systems. This follows directly from React’s component and state model.
+
+Benefits
+Reusable components, predictable data flow, large ecosystem, strong docs, and efficient UI updates through React’s render model.
+
+Cons
+React mainly solves the UI layer. Routing, data fetching strategy, and broader architecture still need separate decisions. Also, misusing Effects or over-optimizing can make code harder to maintain.
+
+Where not to use it
+For a tiny static page with almost no interactivity, plain HTML/CSS/JS can be simpler.
+
+2. Component
+
+Definition
+A component is a reusable piece of UI. In modern React, components are usually JavaScript functions that return JSX. Class components still exist, but function components with Hooks are the standard modern style.
+
+Why use it
+To break the UI into small, independent, reusable parts.
+
+Applications
+Navbar, button, product card, login form, modal, sidebar, cart item.
+
+Benefits
+Reusability, easier maintenance, easier testing, cleaner structure.
+
+Cons
+Over-splitting into too many tiny components can make code harder to follow.
+
+Where not to use it
+Do not create a separate component for every tiny line of markup unless reuse or clarity justifies it.
+
+3. JSX
+
+Definition
+JSX is syntax that lets you write markup-like code inside JavaScript. React components return JSX, which React uses to describe the UI. React’s docs treat built-in tags like div, input, and button as common components with supported props and events.
+
+Why use it
+It makes UI description close to HTML while still allowing JavaScript logic.
+
+Applications
+Rendering elements, passing props, conditional UI, lists.
+
+Benefits
+Readable UI code, easier composition, JavaScript expressions inside UI.
+
+Cons
+Can feel unusual at first because markup and logic live together.
+
+Where not to use it
+Not really a “don’t use” topic inside React; JSX is the normal way. But for extremely dynamic template-generation outside React, other approaches may be more appropriate.
+
+4. Props
+
+Definition
+Props are inputs passed from parent to child. A component should produce UI based on props, state, and context.
+
+Why use it
+To pass data and behavior down the component tree.
+
+Applications
+Passing text, IDs, booleans, event handlers, arrays, configuration.
+
+Benefits
+Clear one-way data flow, reusable components, predictable behavior.
+
+Cons
+Deeply passing props through many layers becomes “prop drilling.”
+
+Where not to use it
+When data must be shared across many distant components, Context may be better than passing the same props through many intermediate layers.
+
+5. State
+
+Definition
+State is data owned by a component that can change over time. In function components, useState adds a state variable to the component. React docs explicitly say useState lets you add a state variable to your component.
+
+Why use it
+To store changing UI data like input text, toggles, selected item, modal open/close, loading state.
+
+Applications
+Forms, counters, dropdown state, cart quantity, tabs, filters.
+
+Benefits
+Interactive UI, localized logic, predictable updates.
+
+Cons
+Too much scattered state can make components messy.
+
+Where not to use it
+Do not store values in state if they can be directly derived from props or other state. That often creates duplication and bugs. React’s guidance on unnecessary Effects strongly aligns with avoiding redundant derived state logic when possible.
+
+6. Event Handling
+
+Definition
+Event handling means responding to user interactions like clicks, typing, submit, focus, blur, and change. React uses its own event system, often referred to as Synthetic Events, to normalize browser behavior. React’s docs describe built-in browser components as supporting common props and events.
+
+Why use it
+To make the UI interactive.
+
+Applications
+Button click, form submit, input typing, delete item, toggle theme.
+
+Benefits
+Clean connection between user action and state updates.
+
+Cons
+Inline handlers everywhere can make JSX crowded.
+
+Where not to use it
+Do not put non-user synchronization logic into event handlers when it really belongs in rendering or an Effect.
+
+7. Controlled Component
+
+Definition
+A controlled input is an input whose current value comes from React state, and whose updates flow through onChange. This follows React’s state-driven rendering model.
+
+Why use it
+When React should stay fully aware of the input value.
+
+Applications
+Login forms, validation, search boxes, multi-step forms.
+
+Benefits
+Easy validation, easy formatting, predictable form behavior.
+
+Cons
+More code than uncontrolled inputs.
+
+Where not to use it
+For very simple cases where you only need the value once, such as reading a file input or a quick uncontrolled field, a ref-based approach can be simpler. useRef is specifically for values not needed for rendering.
+
+8. Uncontrolled Component
+
+Definition
+An uncontrolled input stores its value in the DOM instead of React state. You usually access it with a ref. React docs define useRef as a Hook that lets you reference a value that is not needed for rendering.
+
+Why use it
+To read a value only when needed, without re-rendering on every keystroke.
+
+Applications
+Simple forms, focus management, reading DOM values, file inputs.
+
+Benefits
+Less state code, fewer re-renders for that input.
+
+Cons
+Harder validation and less centralized control.
+
+Where not to use it
+Avoid it for complex forms requiring live validation, formatting, or synchronized UI updates.
+
+9. Rendering
+
+Definition
+Rendering is React running your component to figure out what UI should look like now. React components are expected to be pure: same inputs should produce the same JSX. Strict Mode helps find impure code by double-invoking certain logic in development.
+
+Why use it
+This is the core of React: UI is recalculated from current data.
+
+Applications
+Every state or prop update that changes visible UI.
+
+Benefits
+Declarative UI. Instead of manually changing DOM nodes, you describe the UI for the current state.
+
+Cons
+Beginners sometimes confuse re-rendering with “the whole page reloads,” which is incorrect.
+
+Where not to use it
+Do not force manual DOM manipulation for things React can render declaratively.
+
+10. Conditional Rendering
+
+Definition
+Conditional rendering means showing different JSX depending on some condition.
+
+Why use it
+To show loading, empty state, error state, logged-in vs logged-out UI.
+
+Applications
+isLoading, isAdmin, items.length === 0, modal open/close.
+
+Benefits
+Very natural in JSX with if, ternary, and logical &&.
+
+Cons
+Nested ternaries can hurt readability.
+
+Where not to use it
+Avoid deeply nested conditions inside one return block; split into smaller components or helper variables.
+
+11. Lists and Keys
+
+Definition
+Lists render collections of data. Keys give each list item a stable identity so React can track which items changed, moved, or were removed. This is part of React’s core rendering model.
+
+Why use it
+To render arrays like products, messages, todos, comments.
+
+Applications
+.map() over arrays.
+
+Benefits
+Efficient updates, organized rendering of repeated UI.
+
+Cons
+Using unstable keys like array index in dynamic lists can cause UI bugs when items are inserted, reordered, or removed.
+
+Where not to use it
+Do not use array index as key when the list order can change.
+
+12. Lifting State Up
+
+Definition
+Lifting state up means moving shared state to the nearest common parent so multiple child components can use the same source of truth.
+
+Why use it
+When siblings need to read or update the same data.
+
+Applications
+Search input in one component and filtered results in another; cart quantity shared across product list and navbar.
+
+Benefits
+Shared consistency, less duplication.
+
+Cons
+Can make parent components large.
+
+Where not to use it
+Do not lift state higher than needed. Keep state as local as possible unless sharing is necessary.
+
+13. Hooks
+
+Definition
+Hooks are functions that let function components use React features such as state, context, refs, and effects. React’s Rules of Hooks say they must be called at the top level and only from React functions.
+
+Why use it
+To add stateful and reusable logic to function components.
+
+Applications
+useState, useEffect, useRef, useContext, custom Hooks.
+
+Benefits
+Cleaner function components, logic reuse, less reliance on class components.
+
+Cons
+Hook rules and dependency handling can confuse beginners.
+
+Where not to use it
+Do not call Hooks inside loops, conditions, or nested normal functions.
+
+14. useState
+
+Definition
+useState(initialState) adds a state variable to a component. React’s reference describes exactly that.
+
+Why use it
+For local, changing component data.
+
+Applications
+Counter, form input, toggle, selected tab, modal visibility, fetched data storage.
+
+Benefits
+Simple, direct, foundational.
+
+Cons
+When many related state transitions pile up, the component can get harder to manage.
+
+Where not to use it
+For very complex state transitions across many actions, useReducer can be a better fit. React docs explicitly position reducers as a way to consolidate state update logic.
+
+15. useEffect
+
+Definition
+useEffect connects a component to an external system. React docs say Effects are for synchronizing with things outside React, such as network, DOM APIs, subscriptions, widgets, and similar systems. They also call Effects an “escape hatch.”
+
+Why use it
+To run side-effect logic after render.
+
+Applications
+Fetching data, subscriptions, timers, browser APIs, analytics, event listeners.
+
+Benefits
+Keeps synchronization logic separate from rendering.
+
+Cons
+A very common source of bugs: wrong dependency arrays, duplicate work, infinite loops, stale closures.
+
+Where not to use it
+React docs are very explicit: if no external system is involved, you probably do not need an Effect. Do not use it for pure calculations or for state updates that can be derived during render.
+
+16. Effect Lifecycle
+
+Definition
+Effects do not follow the same lifecycle wording as components. React explains that an Effect only starts synchronizing and later stops synchronizing, and this may happen many times as dependencies change.
+
+Why use it
+To understand cleanup and dependency behavior correctly.
+
+Applications
+Connecting and disconnecting sockets, adding and removing event listeners, starting and clearing intervals.
+
+Benefits
+Prevents memory leaks and stale external subscriptions.
+
+Cons
+Misunderstanding cleanup timing leads to hard bugs.
+
+Where not to use it
+Do not think of every Effect only as “mount once.” Many Effects must re-run when dependencies change.
+
+17. useRef
+
+Definition
+useRef lets you reference a value that is not needed for rendering. It is also used for manipulating the DOM.
+
+Why use it
+To persist a mutable value across renders without triggering a re-render, or to access DOM nodes.
+
+Applications
+Focus input, store timeout ID, hold previous value, read uncontrolled input, access element.
+
+Benefits
+No re-render on update, useful for DOM interaction.
+
+Cons
+Because ref updates do not re-render, refs are poor for values that must appear in the UI immediately.
+
+Where not to use it
+Do not use refs as a replacement for state when the value affects rendering.
+
+18. useContext
+
+Definition
+useContext(SomeContext) reads and subscribes to a context. React’s docs phrase it exactly that way.
+
+Why use it
+To access shared data without manually passing props through every intermediate component.
+
+Applications
+Theme, auth user, language, cart settings, feature flags.
+
+Benefits
+Removes prop drilling for shared app-wide or tree-wide data.
+
+Cons
+If used carelessly, it can make data flow less obvious and can trigger broad re-renders for consumers when context value changes.
+
+Where not to use it
+Do not put every local piece of state into Context. It is not automatically a replacement for all state management.
+
+19. createContext
+
+Definition
+createContext creates a context object. React docs say to call it outside any components, and that Context lets components pass information deep down without explicitly passing props.
+
+Why use it
+To define a shared channel of data for a subtree.
+
+Applications
+ThemeContext, AuthContext, CartContext.
+
+Benefits
+Cleaner access to shared values across many nested components.
+
+Cons
+Poor structure can lead to giant provider trees and unclear ownership.
+
+Where not to use it
+Do not create Context for data used by just one small parent-child chain; props may be simpler.
+
+20. Context API
+
+Definition
+Context API usually means the combination of createContext, a Provider, and useContext to share values deeply in the tree. React’s docs present Context as a solution when passing props becomes verbose and inconvenient across many levels.
+
+Why use it
+To share data across distant components without prop drilling.
+
+Applications
+Authentication, current theme, language, app settings, current user, cart summary.
+
+Benefits
+Cleaner architecture for truly shared data.
+
+Cons
+Not a silver bullet for all state. Very frequent updates in a large context can be inefficient or hard to reason about.
+
+Where not to use it
+Do not use one huge global context for everything. Split by concern, such as theme, auth, or cart. For more complex update logic, React also recommends combining reducer and context.
+
+21. Prop Drilling
+
+Definition
+Prop drilling is passing props through components that do not actually use them, only to reach deeper children. React’s Context docs describe this as verbose and inconvenient.
+
+Why use this term
+It helps explain when Context becomes valuable.
+
+Applications
+Theme or auth being passed through several layout layers.
+
+Benefits
+Props are still explicit and easy to trace.
+
+Cons
+Becomes noisy and repetitive at depth.
+
+Where not to use the workaround
+Do not jump to Context too early. A few levels of props can still be simpler than introducing global shared state.
+
+22. Custom Hook
+
+Definition
+A custom Hook is a function that uses Hooks to reuse logic. React’s docs say you can create your own Hooks when built-in ones are not specific enough for your app’s needs.
+
+Why use it
+To extract repeated logic from multiple components.
+
+Applications
+useFetchData, useOnlineStatus, useAuth, useDebounce.
+
+Benefits
+Cleaner components, reusable behavior, better separation of concerns.
+
+Cons
+Can become abstract too early if the extracted logic is not actually reused.
+
+Where not to use it
+Do not turn every helper into a custom Hook; only do it when it uses Hooks or encapsulates reusable component logic.
+
+23. useReducer
+
+Definition
+Reducers consolidate a component’s state update logic. React docs explicitly state this and also show combining reducer with context for more complex screens.
+
+Why use it
+When state logic has many related transitions or actions.
+
+Applications
+Complex forms, cart operations, multi-step workflows, task management screens.
+
+Benefits
+Centralized update logic, clearer actions, easier scaling.
+
+Cons
+More boilerplate than simple useState.
+
+Where not to use it
+For a single boolean or one small input, useState is simpler.
+
+24. useMemo
+
+Definition
+useMemo caches the result of an expensive calculation to skip unnecessary recalculation. React lists it as a performance Hook.
+
+Why use it
+To avoid repeated expensive calculations on every render.
+
+Applications
+Filtering/sorting large lists, computed totals, derived heavy data.
+
+Benefits
+Can improve performance when the calculation is actually expensive.
+
+Cons
+Adds mental overhead and is often overused where no real bottleneck exists.
+
+Where not to use it
+Do not memoize cheap calculations just because it feels “optimized.”
+
+25. useCallback
+
+Definition
+useCallback caches a function definition before passing it to optimized children. React lists it as a performance Hook and notes that newer tooling like the React Compiler can reduce manual memoization needs.
+
+Why use it
+To keep function references stable when that matters.
+
+Applications
+Passing handlers to memoized child components.
+
+Benefits
+Can reduce unnecessary child renders in specific cases.
+
+Cons
+Overuse adds complexity and can give little real gain.
+
+Where not to use it
+Do not wrap every handler in useCallback by default.
+
+26. memo
+
+Definition
+memo lets a component skip re-renders when its props have not changed. React lists memo among built-in APIs for optimization.
+
+Why use it
+To avoid unnecessary re-rendering of stable child components.
+
+Applications
+Large lists, expensive child rendering, repeated presentational components.
+
+Benefits
+Can improve performance.
+
+Cons
+Not useful if props change every render anyway.
+
+Where not to use it
+Do not memo everything. Use it when profiling or reasoning shows a real benefit.
+
+27. StrictMode
+
+Definition
+<StrictMode> helps find bugs by intentionally double-rendering some logic in development and checking purity assumptions. React docs explain that this helps reveal impure components.
+
+Why use it
+To catch risky patterns during development.
+
+Applications
+Development-only quality checks.
+
+Benefits
+Finds unsafe side effects and impure logic early.
+
+Cons
+Beginners sometimes think it is a bug because some logic runs twice in development.
+
+Where not to use it
+It is not removed from production behavior because it does not affect production output the same way; it is mainly a development aid.
+
+28. Data Fetching in React
+
+Definition
+Fetching data means making a network request and then rendering the result. React docs group network synchronization under Effects because it is an external system.
+
+Why use it
+Most real apps need server data.
+
+Applications
+Products, user profile, dashboard stats, comments, orders.
+
+Benefits
+Dynamic apps with live backend data.
+
+Cons
+Loading states, error handling, race conditions, and repeated fetches can be tricky.
+
+Where not to use a plain local pattern
+For large apps, raw fetch inside every component can become repetitive. A custom Hook or a dedicated data layer is cleaner.
+
+29. Context + API Fetching
+
+Definition
+This usually means fetching data once in a provider or shared Hook, then exposing the result through Context to many components.
+
+Why use it
+To avoid duplicate requests and repeated prop passing.
+
+Applications
+Current authenticated user, theme config from server, cart summary, global settings.
+
+Benefits
+Shared source of truth and cleaner access.
+
+Cons
+If the context value updates often, many consumers may re-render.
+
+Where not to use it
+Do not place every fetched collection into one giant context. Keep it for truly shared data.
+
+30. When Context is enough vs when it is not
+
+Context is enough when
+The data is shared widely, update frequency is moderate, and the logic is understandable: theme, auth, locale, current user, simple cart summary.
+
+Context alone is not ideal when
+The app has very complex update logic, many independent global domains, or extremely frequent updates. In those cases, reducer + context or a dedicated state solution may be clearer. React docs explicitly present reducer + context as a scaling pattern.
+
+31. Very important “do not misuse” React terminology
+
+Single source of truth
+One place should own a piece of data. This reduces conflicts.
+
+Derived state
+If a value can be calculated from existing state/props during render, often do that instead of storing duplicate state. React’s “You Might Not Need an Effect” guidance supports this mindset.
+
+Synchronization
+Effects synchronize React with external systems. They are not the default tool for ordinary app data flow.
+
+Escape hatch
+React explicitly calls Effects an escape hatch, meaning they are for stepping outside React’s normal render model.
+
+Top-level Hook call
+Hooks must be called at the top level, not inside loops, conditions, or nested non-Hook functions.
+
+32. Simple mental map of React
+
+Use this to remember the flow:
+
+React = build UI with components
+JSX = describe UI
+Props = parent gives data
+State = component-owned changing data
+Events = user actions
+Rendering = React recalculates UI
+Effects = sync with outside world
+Refs = store mutable value / access DOM
+Context = share data deeply without prop drilling
+Custom Hooks = reuse logic
+
+This summary matches the official React reference and learn materials around components, hooks, effects, refs, and context.
+
+33. Best order to study React terminology
+
+Study in this order:
+
+React, component, JSX
+props, state, events
+rendering, conditional rendering, lists, keys
+controlled vs uncontrolled inputs
+lifting state up
+Hooks and Rules of Hooks
+useState, useEffect, useRef
+custom Hooks
+createContext, useContext, Context API
+reducer + context for scaling
+
+This sequence follows React’s learning flow and the dependency between concepts in the docs.
+
+34. Interview-ready one-line definitions
+
+Here are compact lines you can memorize:
+
+React — A library for building UI with reusable components.
+Component — A reusable piece of UI.
+JSX — HTML-like syntax inside JavaScript for describing UI.
+Props — Data passed from parent to child.
+State — Data owned by a component that can change.
+Event — A user or browser interaction React responds to.
+Controlled input — Input value comes from React state.
+Uncontrolled input — Input value stays in the DOM, often read with a ref.
+useState — Adds local state to a function component.
+useEffect — Synchronizes a component with an external system.
+useRef — Stores a mutable value without causing re-render, or references DOM.
+Context — Shares data deeply without prop drilling.
+useContext — Reads and subscribes to context.
+Custom Hook — Reusable Hook-based logic.
+useReducer — Centralizes complex state update logic.
+useMemo — Caches expensive calculations.
+useCallback — Caches function references.
+memo — Skips child re-render when props are unchanged.
+These definitions are aligned with React’s official API wording.
+
+If you want, I can turn this into a clean React terminology notes sheet or a day-by-day React study roadmap from basics to project level.

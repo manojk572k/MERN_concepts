@@ -1,9 +1,14 @@
+What you just learned (VERY IMPORTANT)
+managing multiple inputs with one state
+dynamic updates using [name]: value
+spreading previous state ...form
+controlled form at scale
+
+👉 This is used in real apps (login/signup forms)
+
 import { useState } from "react";
-import './App.css'
+
 export default function App() {
-
-const[error,setError]=useState("")
-
 const [form,setForm]=useState({
   name: "",
   email: "",
@@ -19,23 +24,23 @@ const handleChange =(e)=>{
 
 const handleSubmit =(e)=>{
   e.preventDefault()
-
-  if(form.name.trim()===""||form.email.trim()===""||form.password.trim()===""){
-    setError("All fields are required")
-    return;
-  }
-  setError("");
-    console.log(form);
+  console.log(form)
 }
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" placeholder="enter name" value={form.name} onChange={handleChange} />
         <input type="text" name="email" placeholder="enter email" value={form.email} onChange={handleChange} />
-        <input type="password" name="password" placeholder="enter password" value={form.password} onChange={handleChange} />
+        <input type="text" name="password" placeholder="enter password" value={form.password} onChange={handleChange} />
         <button type="submit">Submit</button>
-        <p>{error}</p>
       </form>
     </div>
   );
 }
+
+🔥 Mental model
+input → name="email"
+        ↓
+handleChange
+        ↓
+form.email = value
