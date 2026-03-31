@@ -3,7 +3,7 @@ import './App.css'
 export default function App() {
 
 const[error,setError]=useState("")
-
+const [submitted, setSubmitted] = useState(null)
 const [form,setForm]=useState({
   name: "",
   email: "",
@@ -15,17 +15,24 @@ const handleChange =(e)=>{
     ...form,
     [name]: value
   })
+  if(name === "password" && value.length < 6 && value.length > 0){
+    setError("password must be atleast 6 letters")
+  }
+  else{
+    setError("")
+  }
 }
 
 const handleSubmit =(e)=>{
   e.preventDefault()
-
+  setSubmitted(form)
   if(form.name.trim()===""||form.email.trim()===""||form.password.trim()===""){
     setError("All fields are required")
     return;
   }
   setError("");
-    console.log(form);
+  // setForm("")
+  console.log(form);
 }
   return (
     <div>
@@ -35,6 +42,13 @@ const handleSubmit =(e)=>{
         <input type="password" name="password" placeholder="enter password" value={form.password} onChange={handleChange} />
         <button type="submit">Submit</button>
         <p>{error}</p>
+         {submitted && (
+         <div>
+         <p>Name: {submitted.name}</p>
+         <p>Email: {submitted.email}</p>
+         <p>Password: {submitted.password}</p>
+         </div>
+        )}
       </form>
     </div>
   );
