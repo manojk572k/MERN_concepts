@@ -1,4 +1,7 @@
-<> </> A Fragment lets me group multiple elements without adding an extra div in the DOM.
+
+React Components: 19.2 version 
+
+<> </> A Fragment lets group multiple elements without adding an extra div in the DOM.
 👉 Fragment = group elements
 👉 Fragment + key = fix .map() problem
 👉 Fragment + ref = control multiple elements (advanced)
@@ -8,13 +11,61 @@
 ✅ Avoid CSS/layout issues
 ✅ Required when returning multiple elements
 
+<Profiler> lets you measure rendering performance of a React tree programmatically.
+const onRender = (id, phase, actualDuration) => {
+  console.log(`${id} (${phase}) took ${actualDuration}ms`)
+}
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <Profiler id="App" onRender={onRender}>
+        <App />
+    </Profiler>
+  </StrictMode>,
+)
+
+<StrictMode> lets you find common bugs in your components early during development.
+<StrictMode>
+  <App />
+</StrictMode>
+Best use for developing, later remove the strict mode.
+🚀 When does render happen?
+1. Initial load
+2. State change (setText)
+3. Props change
+4. Parent re-render
+“Render means executing the component function to compute JSX. It doesn’t always mean updating the DOM — React compares and updates only what changed.”
+StrictMode only affects development and is ignored in production, so it doesn’t need to be removed.”
+
+<Suspense> lets you display a fallback until its children have finished loading.
+<Suspense fallback={<Loading />}>
+  <SomeComponent />
+</Suspense>
+“Suspense allows React to delay rendering of a component and show a fallback UI until the component or resource is ready.”
+
+Activity> lets you hide and restore the UI and internal state of its children.
+<Activity mode={visibility}>
+  <Sidebar />
+</Activity>
+It is useful when I want to hide something that is likely to come back soon, but I do not want to lose local UI state, such as:
+tab panels
+sidebars
+drafts in forms
+expandable panels
+pre-rendered content likely to become visible soon.
+Important caveat
+If the hidden content has useEffect subscriptions, timers, or listeners, React will clean those up while hidden and recreate them when shown again. So preserved state/DOM does not mean effects keep running in the background.
+Simple mental model
+{show && <Comp />} → hide by unmounting → state lost
+<Activity mode="hidden"><Comp /></Activity> → hide by preserving → state kept, effects cleaned up.
 
 
 
 
+react-dom@19.2: 19.2 version 
 
 
 
+///////////////////////////////////////
 
 Hooks:
 Usestate :
@@ -23,4 +74,256 @@ previous state -
 conditional update ?prev:1
 arithmetic update. +*-
 
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////
+
+Key concepts 
+
+1) Props:
+Props = inputs to a component
+Parent → sends data → Child receives it
+🔹 Basic Example
+<Display text="Hello" />
+👉 React creates:
+props = {
+  text: "Hello"
+}
+Props are always an object
+children: is a special prop automatically created by React
+
+function Display({children}) {
+  return <h1>{children}</h1>
+}
+import Display from "./Child";
+export default function App() {
+  return (
+    <div>
+      <Display>"Hello Manoj"</Display>
+    </div>
+  );
+}
+
+target = the actual DOM element that triggered the event
+.value = the current text inside the input
+Combine everything
+e.target.value
+👉 Means:
+“Give me the current text inside the input box”
+SyntheticEvent = “React’s version of event, same API everywhere”
+ above difference in JS
+ n plain JavaScript:
+document.querySelector("input").addEventListener("input", (e) => {
+  console.log(e.target.value)
+})
+React does the same — but:
+✔ Cleaner
+✔ Cross-browser safe
+✔ Works with React rendering system
+
+One-line intuition
+
+e = event
+target = element
+value = data inside element
+
+👉 So:
+“Give me what user typed in that input”
+
+“In older React versions, event objects were reused for performance, and their properties were cleared after execution. This caused issues when accessing event data asynchronously. React 17 removed event pooling.”
+Pooling = “React reused event objects and erased their data after use”
+
+
+🔹 Controlled vs Uncontrolled (Short)
+✅ Controlled
+Value stored in React state
+Uses: value + onChange
+React controls everything
+👉 Best for forms, validation
+✅ Uncontrolled
+Value stored in DOM
+Uses: ref
+React reads value only when needed
+👉 Best for simple / fast inputs
+🔹 One-line memory
+
+Controlled = state
+Uncontrolled = ref
+
+🔹 Interview line
+
+“Controlled components use React state as the source of truth, while uncontrolled components rely on the DOM.”
+
+
+🔹 React Rendering (Short)
+Rendering = state/props → UI
+React re-renders when:
+State changes
+Props change
+Parent re-renders
+🔹 How it works
+
+State change → New Virtual DOM → Compare → Update only changed parts
+
+🔹 Key concept
+
+👉 Virtual DOM = copy of real DOM for efficient updates
+
+🔹 Important
+Re-render ≠ DOM update
+React updates only what changed
+🔹 One-line memory
+
+“State changes → React recalculates UI → updates minimal DOM”
+
+
+🧠 What is “Lifting State Up”?
+👉 Move state to the closest common parent
+so multiple components can use it.
+
+////////////////////////////
+covered (march 25th 2026)
+map((item, index)) → second value is always index
+key → must be stable identifier (index ok for now)
+trim() → removes spaces → avoids empty items
+controlled input → easy to clear using state
+
+✅ 1. JSX
+writing UI inside JS
+using {} for dynamic values
+✅ 2. useState
+storing state
+updating UI when state changes
+const [text, setText] = useState("")
+
+👉 difference:
+
+normal variable ❌ no re-render
+state variable ✅ re-render
+✅ 3. Event Handling
+onClick, onChange
+camelCase
+onClick={...}
+onChange={(e) => ...}
+✅ 4. Controlled Input
+input tied to state
+value={text}
+onChange={(e) => setText(e.target.value)}
+
+👉 React controls input
+
+✅ 5. Array State
+storing multiple items
+const [items, setItems] = useState([])
+✅ 6. Updating Array
+using spread
+setItems([...items, text])
+
+👉 never mutate directly
+
+✅ 7. Rendering Lists (map)
+items.map((item, index) => ...)
+
+👉 most used React pattern
+
+✅ 8. Keys
+key={index}
+
+👉 helps React track list items
+
+✅ 9. Delete using filter
+setItems(items.filter((_, i) => i !== index))
+
+👉 removes item immutably
+
+✅ 10. Props (VERY IMPORTANT)
+passing data parent → child
+<Item text={item} />
+✅ 11. Props + Functions
+passing function to child
+onDelete={() => handleDelete(index)}
+
+👉 child triggers parent logic
+
+✅ 12. Children (bonus)
+<Display>Hello</Display>
+
+👉 children prop
+
+
+
+
+
+
+//////////////////////
+covered march(30th 2026)
+
+React Concepts Covered
+1. Array State Update (Delete logic)
+filter() → keeps items that return true
+Used i !== index to remove item
+👉 Key: Don’t mutate state, create new array
+2. Event Handling
+e = event object
+e.target = element
+e.target.value = user input
+
+👉 Key: Used to capture input data
+
+3. Different Ways to Access Value
+e.target.value
+destructuring ({ target: { value } })
+ref.current.value
+4. Synthetic Events
+React wraps browser events into
+👉 React SyntheticEvent
+Provides consistent behavior across browsers
+5. Event Pooling (Old React)
+Events were reused → values became null
+Fixed in modern React (17+)
+
+👉 Key: Now safe to use events anytime
+
+6. Controlled vs Uncontrolled
+Controlled → React state
+Uncontrolled → DOM (ref)
+
+👉 Key:
+
+Controlled = state
+Uncontrolled = ref
+
+7. React Rendering
+Triggered by state/props
+Uses
+👉 Virtual DOM
+Updates only changed parts
+
+👉 Key:
+
+Re-render ≠ DOM update
+
+🔹 Big Picture (Very Important)
+
+You now understand:
+
+User input → Event → State update → Re-render → UI update
+
+Lifting State Up (5–6 line summary)
+Move state to the closest common parent
+Used when multiple components need the same data
+Parent owns the state, children receive via props
+Children communicate changes using function props
+Data flows down, actions flow up
+Ensures a single source of truth and predictable updates
 
