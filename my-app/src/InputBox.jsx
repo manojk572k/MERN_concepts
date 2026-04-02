@@ -1,11 +1,15 @@
-import Item from "./Message" 
+import { useEffect, useState } from "react"
 
-export default function InputBox({ text, input, addButton }){  
-return(
-  <div>
-    <input type="text" placeholder="enter text" value={text} onChange={input}/>
-    <button onClick={addButton}>ADD</button>
-  </div>
-
-)
+export default function useDebounced(value, delay){  
+  const[debouncedvalue,setDebouncedvalue]=useState("")
+  useEffect(()=>{
+    const timer = setTimeout(()=>{
+      setDebouncedvalue(value)
+    },delay)
+    return ()=>{
+    clearTimeout(timer)
+    }
+},[value,delay])
+  return debouncedvalue
+    
 }

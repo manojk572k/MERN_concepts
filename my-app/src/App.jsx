@@ -1,25 +1,15 @@
 import { useEffect, useState } from "react";
-
+import useDebounced from "./InputBox";
 function App() {
   const [users,setUsers]=useState([])
   const [loading,setLoading]=useState(true)
-  const [debounced,setDebounced]=useState("")
   const [error,setError]=useState("")
   const [search,setSearch]= useState("")
   
+  const debounced = useDebounced(search,500)
   const filteredUsers = users.filter((user)=>{
     return user.name.toLowerCase().includes(debounced.toLowerCase())
   })
-
-  useEffect(()=>{
-    const timer = setTimeout(()=>{
-      setDebounced(search)
-    },500)
-    return ()=>{
-      clearTimeout(timer)
-    }
-  },[search])
-
   useEffect(()=>{
   const fetchUsers = async()=> {
     try{

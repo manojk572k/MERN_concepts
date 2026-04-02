@@ -1,0 +1,212 @@
+What is a custom hook?
+
+A custom hook is:
+
+a reusable function
+that uses React hooks inside it
+used to share logic between components
+
+Rule:
+
+custom hook name must start with use
+
+Example:
+
+useDebounce
+useFetchUsers
+useForm
+Why custom hook?
+
+Right now your debounce logic is directly inside App.
+
+That works, but if you need same debounce in another component, you would rewrite it again.
+
+Custom hook solves that.
+
+Goal
+
+Move this logic:
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(search)
+  }, 500)
+
+  return () => clearTimeout(timer)
+}, [search])
+
+into:
+
+const debouncedSearch = useDebounce(search, 500)
+
+That looks much cleaner.
+
+Step 1: Create useDebounce.js
+import { useEffect, useState } from "react";
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+export default useDebounce;
+What this means
+Inputs
+value → current changing value
+delay → wait time in ms
+Internal state
+debouncedValue → delayed stable value
+Return
+gives final debounced value back
+Step 2: Use it in App.jsx
+import { useEffect, useState } from "react";
+import useDebounce from "./useDebounce";
+
+function App() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+
+  const debouncedSearch = useDebounce(search, 500);
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+  );
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/users");
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await res.json();
+        setUsers(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Search user"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error &&
+        filteredUsers.map((user) => (
+          <div key={user.id}>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+          </div>
+        ))}
+    </div>
+  );
+}
+
+export default App;
+What you learned here
+custom hook extracts reusable logic
+still uses useState and useEffect
+returns useful value to component
+keeps component cleaner
+Simple summary to store
+a custom hook is a reusable function that uses React hooks
+custom hook names start with use
+used to extract shared logic, not UI
+useDebounce returns a delayed version of a changing value
+this makes component code cleaner and reusable
+////////////////////////////
+
+import { useEffect, useState } from "react";
+import useDebounced from "./InputBox";
+function App() {
+  const [users,setUsers]=useState([])
+  const [loading,setLoading]=useState(true)
+  const [error,setError]=useState("")
+  const [search,setSearch]= useState("")
+  
+  const debounced = useDebounced(search,500)
+  const filteredUsers = users.filter((user)=>{
+    return user.name.toLowerCase().includes(debounced.toLowerCase())
+  })
+  useEffect(()=>{
+  const fetchUsers = async()=> {
+    try{
+    const res = await fetch("https://jsonplaceholder.typicode.com/users")
+      if(!res.ok){
+        throw new Error("Failed to fetch data")
+      }
+      const data =await res.json()
+        setUsers(data);
+        setLoading(false);
+    }
+    catch(error){
+        setError(error.message);
+    }
+    finally{
+        setLoading(false)
+    }
+    }
+    fetchUsers()
+  },[])
+
+  return (
+    <div>
+      <input
+      type="text"
+      placeholder="Search user"
+      value={search}
+      onChange={(e)=>setSearch(e.target.value)}
+      />
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error &&
+      filteredUsers.map((user)=>(
+        <div key={user.id}>
+        <p>{user.name}</p>
+        <p>{user.email}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default App
+/////
+import { useEffect, useState } from "react"
+
+export default function useDebounced(value, delay){  
+  const[debouncedvalue,setDebouncedvalue]=useState("")
+  useEffect(()=>{
+    const timer = setTimeout(()=>{
+      setDebouncedvalue(value)
+    },delay)
+    return ()=>{
+    clearTimeout(timer)
+    }
+},[value,delay])
+  return debouncedvalue
+    
+}
