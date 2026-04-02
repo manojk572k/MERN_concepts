@@ -1,55 +1,56 @@
-import { useState } from "react";
-import './App.css'
-export default function App() {
+import { useEffect, useState } from "react";
 
-const[error,setError]=useState("")
-const [submitted, setSubmitted] = useState(null)
-const [form,setForm]=useState({
-  name: "",
-  email: "",
-  password: ""
-})
-const handleChange =(e)=>{
-  const {name,value} = e.target
-  setForm({
-    ...form,
-    [name]: value
+function App() {
+  const [users,setUsers]=useState([])
+  const [loading,setLoading]=useState(true)
+  const [error,setError]=useState("")
+  const [search,setSearch]= useState("")
+  
+  const filteredUsers = users.filter((user)=>{
+    return user.name.toLowerCase().includes(search.toLowerCase())
   })
-  if(name === "password" && value.length < 6 && value.length > 0){
-    setError("password must be atleast 6 letters")
-  }
-  else{
-    setError("")
-  }
-}
 
-const handleSubmit =(e)=>{
-  e.preventDefault()
-  setSubmitted(form)
-  if(form.name.trim()===""||form.email.trim()===""||form.password.trim()===""){
-    setError("All fields are required")
-    return;
-  }
-  setError("");
-  // setForm("")
-  console.log(form);
-}
+  useEffect(()=>{
+  const fetchUsers = async()=> {
+    try{
+    const res = await fetch("https://jsonplaceholder.typicode.com/users")
+      if(!res.ok){
+        throw new Error("Failed to fetch data")
+      }
+      const data =await res.json()
+        setUsers(data);
+        setLoading(false);
+    }
+    catch(error){
+        setError(error.message);
+    }
+    finally{
+        setLoading(false)
+    }
+    }
+    fetchUsers()
+  },[])
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="enter name" value={form.name} onChange={handleChange} />
-        <input type="text" name="email" placeholder="enter email" value={form.email} onChange={handleChange} />
-        <input type="password" name="password" placeholder="enter password" value={form.password} onChange={handleChange} />
-        <button type="submit">Submit</button>
-        <p>{error}</p>
-         {submitted && (
-         <div>
-         <p>Name: {submitted.name}</p>
-         <p>Email: {submitted.email}</p>
-         <p>Password: {submitted.password}</p>
-         </div>
-        )}
-      </form>
+      <input
+      type="text"
+      placeholder="Search user"
+      value={search}
+      onChange={(e)=>setSearch(e.target.value)}
+      />
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error &&
+      filteredUsers.map((user)=>(
+        <div key={user.id}>
+        <p>{user.name}</p>
+        <p>{user.email}</p>
+        </div>
+      ))}
     </div>
-  );
+  )
 }
+
+export default App

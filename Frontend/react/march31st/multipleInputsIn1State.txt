@@ -44,3 +44,69 @@ input → name="email"
 handleChange
         ↓
 form.email = value
+
+
+
+What you learned here
+validate first
+only save submitted data after validation passes
+submitted is different from form
+conditional rendering with submitted && ...
+
+
+
+import { useState } from "react";
+import './App.css'
+export default function App() {
+
+const[error,setError]=useState("")
+const [submitted, setSubmitted] = useState(null)
+const [form,setForm]=useState({
+  name: "",
+  email: "",
+  password: ""
+})
+const handleChange =(e)=>{
+  const {name,value} = e.target
+  setForm({
+    ...form,
+    [name]: value
+  })
+  if(name === "password" && value.length < 6 && value.length > 0){
+    setError("password must be atleast 6 letters")
+  }
+  else{
+    setError("")
+  }
+}
+
+const handleSubmit =(e)=>{
+  e.preventDefault()
+  setSubmitted(form)
+  if(form.name.trim()===""||form.email.trim()===""||form.password.trim()===""){
+    setError("All fields are required")
+    return;
+  }
+  setError("");
+  // setForm("")
+  console.log(form);
+}
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="name" placeholder="enter name" value={form.name} onChange={handleChange} />
+        <input type="text" name="email" placeholder="enter email" value={form.email} onChange={handleChange} />
+        <input type="password" name="password" placeholder="enter password" value={form.password} onChange={handleChange} />
+        <button type="submit">Submit</button>
+        <p>{error}</p>
+         {submitted && (
+         <div>
+         <p>Name: {submitted.name}</p>
+         <p>Email: {submitted.email}</p>
+         <p>Password: {submitted.password}</p>
+         </div>
+        )}
+      </form>
+    </div>
+  );
+}

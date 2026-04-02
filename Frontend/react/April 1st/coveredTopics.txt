@@ -1,0 +1,42 @@
+Core React
+JSX and rendering
+useState for state management
+event handling (onClick, onChange)
+controlled inputs
+🔹 Data Handling
+array state updates using spread [...]
+list rendering with map()
+using key
+deleting items using filter()
+🔹 Props & Architecture
+passing props (parent → child)
+passing functions as props (onDelete, onAdd)
+children prop
+component splitting (App, InputBox, Item)
+lifting state up (single source of truth)
+🔹 Forms
+single input form
+multi-input form using object state
+handleChange with dynamic keys [name]: value
+form submission with onSubmit
+e.preventDefault()
+🔹 Validation
+required field validation
+password length validation
+live validation while typing
+error handling using state
+conditional error rendering
+🔹 useEffect & API
+useEffect basics (mount & dependency)
+API calls using fetch
+async/await pattern
+loading state
+error handling
+conditional rendering for API states
+🔹 Search Feature
+search input state
+filtering API data using filter()
+includes() for partial matching
+case-insensitive search
+handling empty results ("No users found")
+rendering multiple fields (name + email)

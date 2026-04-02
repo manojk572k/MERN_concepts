@@ -1,0 +1,106 @@
+🧠 What is useEffect?
+
+👉 It lets you run code after React renders UI
+
+🔥 Simple meaning
+Render happens → then useEffect runs
+📦 Basic syntax
+useEffect(() => {
+  // code here
+}, [])
+⚡ First example (run once)
+import { useEffect } from "react"
+
+useEffect(() => {
+  console.log("Component loaded")
+}, [])
+🧠 What does [] mean?
+
+👉 Empty dependency array = run only once
+
+When component mounts → run → never again
+🔥 Where to use this?
+API calls
+initial setup
+logging
+loading data
+🧪 Try this simple code
+import { useEffect } from "react"
+
+export default function App() {
+
+  useEffect(() => {
+    console.log("App loaded")
+  }, [])
+
+  return <h1>Hello Manoj</h1>
+}
+
+👉 Open console → you will see:
+
+App loaded
+🔁 Second type: run on state change
+import { useState, useEffect } from "react"
+
+export default function App() {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    console.log("Count changed:", count)
+  }, [count])
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>Add</button>
+    </div>
+  )
+}
+🧠 What happens here?
+click button → state changes
+React re-renders
+useEffect runs again
+⚡ Key concept
+Dependency array controls WHEN useEffect runs
+📊 Summary of behavior
+useEffect form	behavior
+useEffect(..., [])	run once
+useEffect(..., [state])	run when state changes
+no array	runs every render (not recommended now)
+🧠 Mental model
+UI updates → then side effects run
+🎯 Your task now
+
+Do this:
+
+Task 1
+create count state
+add button
+log "count changed" using useEffect
+Task 2
+add another useEffect with []
+log "App mounted"
+
+
+/////////
+🧠 What you just mastered
+
+You now understand:
+
+1. Run once
+useEffect(() => {}, [])
+2. Run on state change
+useEffect(() => {}, [count])
+3. Multiple useEffects
+useEffect(() => {...}, [])
+useEffect(() => {...}, [count])
+
+👉 React allows multiple effects for different purposes
+
+🔥 Important concept (very useful)
+
+👉 useEffect runs after render
+
+Flow:
+
+State change → UI updates → useEffect runs

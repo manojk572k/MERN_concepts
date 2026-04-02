@@ -1,0 +1,595 @@
+What you need for API in React
+
+Usually 3 states:
+
+data → fetched result
+loading → while waiting
+error → if request fails
+Step 1: Basic fetch with useEffect
+import { useEffect, useState } from "react";
+
+export default function App() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
+
+  return (
+    <div>
+      {users.map((user) => (
+        <p key={user.id}>{user.name}</p>
+      ))}
+    </div>
+  );
+}
+What is happening
+useEffect(..., [])
+
+Runs once when component loads.
+
+fetch(...)
+
+Sends request to API.
+
+.then((res) => res.json())
+
+Converts response into JavaScript data.
+
+.then((data) => setUsers(data))
+
+Stores fetched users in state.
+
+users.map(...)
+
+Displays each user.
+
+Step 2: Add loading state
+
+Real apps should show loading.
+
+import { useEffect, useState } from "react";
+
+export default function App() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data);
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <div>
+      {loading ? <p>Loading...</p> : users.map((user) => <p key={user.id}>{user.name}</p>)}
+    </div>
+  );
+}
+Step 3: Add error state
+
+If API fails, app should show error.
+
+import { useEffect, useState } from "react";
+
+export default function App() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <div>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error && users.map((user) => (
+        <p key={user.id}>{user.name}</p>
+      ))}
+    </div>
+  );
+}
+What you just learned
+useEffect for API on mount
+fetch to get data
+loading state while waiting
+error state if request fails
+conditional rendering for API states
+Easy mental flow
+App loads
+→ useEffect runs
+→ fetch starts
+→ loading true
+→ data comes
+→ setUsers(data)
+→ loading false
+→ UI shows users
+Best simple summary to store
+API call in React is commonly done inside useEffect
+useEffect(..., []) runs once when component mounts
+fetched data is stored in state
+use loading state while waiting for response
+use error state to handle failures
+render UI conditionally based on loading, error, and data
+Your task now
+
+Try this app with:
+
+users state
+loading state
+fetch from jsonplaceholder
+show only user names
+
+Send your code and I’ll review it step by step.
+
+//////////
+
+import { useEffect, useState } from "react";
+
+function App() {
+  const [users,setUsers]=useState([])
+  const [loading,setLoading]=useState(true)
+  const [error,setError]=useState("")
+  
+  useEffect(()=>{
+  fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) =>{
+      if(!res.ok){
+        throw new Error("Failed to fetch data")
+      }
+      else
+      return res.json()})
+      .then((data)=>{
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch((error)=>{
+        setError(error.message);
+        setLoading(false)
+      })
+  },[])
+
+  return (
+    <div>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error &&
+      users.map((user)=>(
+        <p key={user.id}>{user.name}</p>
+      ))}
+    </div>
+  )
+}
+
+export default App
+
+////////////
+
+Implicit Return: Implicitly returns the value of an expression, skipping the keyword.
+JS Example: const add = (a, b) => a + b;
+Usage: Ideal for simple, single-expression arrow functions.
+Explicit Return: Explicitly states what to return using the return keyword.
+JS Example: const add = (a, b) => { return a + b; };
+Usage: Necessary when using block syntax ({}) or multiple lines. 
+
+///////////
+
+async/await is just a cleaner way of writing the same logic.
+
+🧠 Compare first
+Old (you used)
+fetch(...)
+  .then(...)
+  .then(...)
+  .catch(...)
+New (async/await)
+const fetchData = async () => {
+  const res = await fetch(...)
+  const data = await res.json()
+}
+
+👉 Same logic, cleaner flow
+
+🔥 Step-by-step conversion
+Step 1: Create async function inside useEffect
+useEffect(() => {
+  const fetchUsers = async () => {
+
+  }
+
+  fetchUsers()
+}, [])
+Step 2: Write fetch logic
+const fetchUsers = async () => {
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/users")
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data")
+    }
+
+    const data = await res.json()
+    setUsers(data)
+    setLoading(false)
+
+  } catch (error) {
+    setError(error.message)
+    setLoading(false)
+  }
+}
+✅ Full async version
+import { useEffect, useState } from "react";
+
+function App() {
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/users")
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch data")
+        }
+
+        const data = await res.json()
+
+        setUsers(data)
+        setLoading(false)
+
+      } catch (error) {
+        setError(error.message)
+        setLoading(false)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  return (
+    <div>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error &&
+        users.map((user) => (
+          <p key={user.id}>{user.name}</p>
+        ))}
+    </div>
+  )
+}
+
+export default App
+🧠 What changed
+1. await fetch()
+
+Waits for API response
+
+2. await res.json()
+
+Waits for data conversion
+
+3. try/catch
+
+Replaces .catch()
+
+⚡ Mental flow
+useEffect runs
+→ async function starts
+→ await fetch
+→ await json
+→ update state
+→ UI updates
+🔥 Why async is better
+cleaner
+easier to read
+easier to debug
+industry standard
+🧠 Short summary to store
+async/await replaces .then() chaining
+await pauses execution until promise resolves
+try/catch handles errors
+used inside useEffect for API calls
+cleaner and more readable code
+🎯 Your task
+
+Convert your previous .then() code to async version (same as above).
+
+////////////
+import { useEffect, useState } from "react";
+
+function App() {
+  const [users,setUsers]=useState([])
+  const [loading,setLoading]=useState(true)
+  const [error,setError]=useState("")
+  
+  useEffect(()=>{
+  const fetchUsers = async()=> {
+    try{
+    const res = await fetch("https://jsonplaceholder.typicode.com/users")
+      if(!res.ok){
+        throw new Error("Failed to fetch data")
+      }
+      const data =await res.json()
+        setUsers(data);
+        setLoading(false);
+    }
+    catch(error){
+        setError(error.message);
+    }
+    finally{
+        setLoading(false)
+    }
+    }
+    fetchUsers()
+  },[])
+
+  return (
+    <div>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error &&
+      users.map((user)=>(
+        <p key={user.id}>{user.name}</p>
+      ))}
+    </div>
+  )
+}
+
+export default App
+
+
+////////////////////
+
+Goal
+
+Use an input box to search/filter API data already fetched.
+
+So flow becomes:
+
+fetch users → store in state → type in search box → show matching users
+What you will learn
+one state for API data
+one state for search text
+filter() for search
+rendering filtered results
+Step 1: add search state
+const [search, setSearch] = useState("")
+
+This stores what user types.
+
+Step 2: add input box
+<input
+  type="text"
+  placeholder="Search user"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
+
+This is a controlled input, same as your form inputs.
+
+Step 3: filter users
+
+After fetching users, create a filtered array:
+
+const filteredUsers = users.filter((user) =>
+  user.name.toLowerCase().includes(search.toLowerCase())
+)
+What this means
+toLowerCase()
+
+Makes search case-insensitive
+
+Example:
+
+Manoj
+manoj
+
+both match.
+
+includes()
+
+Checks whether typed text exists inside user name
+
+Example:
+
+search = "er"
+"Leanne Graham" → no
+"Ervin Howell" → yes
+Step 4: render filtered users
+
+Instead of:
+
+users.map(...)
+
+use:
+
+filteredUsers.map(...)
+Full code
+import { useEffect, useState } from "react";
+
+function App() {
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [search, setSearch] = useState("")
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("https://jsonplaceholder.typicode.com/users")
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch data")
+        }
+
+        const data = await res.json()
+        setUsers(data)
+      } catch (error) {
+        setError(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(search.toLowerCase())
+  )
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Search user"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+
+      {!loading && !error &&
+        filteredUsers.map((user) => (
+          <p key={user.id}>{user.name}</p>
+        ))}
+    </div>
+  )
+}
+
+export default App
+What you just learned
+search input state
+filtering an array with filter()
+text matching with includes()
+case-insensitive search
+rendering filtered API data
+Important concept
+
+You are not fetching again on every key press here.
+
+You already fetched all users once.
+
+Then:
+
+user types
+React filters local array
+UI updates
+
+That is called client-side filtering
+
+Mental flow
+API data in users
+search text in search
+filter users using search
+render filteredUsers
+Small practice tasks
+
+Do these in order:
+
+Task 1
+
+Show No users found when search has no match.
+
+Hint:
+
+filteredUsers.length === 0
+Task 2
+
+Also show user email under the name.
+
+Task 3
+
+Search by both:
+
+name
+email
+Small summary to store
+search API UI often uses a separate search state
+fetched data stays in one state like users
+filter() creates matching results
+includes() checks partial text match
+toLowerCase() makes search case-insensitive
+render filteredUsers instead of original users
+
+///////////////////
+import { useEffect, useState } from "react";
+
+function App() {
+  const [users,setUsers]=useState([])
+  const [loading,setLoading]=useState(true)
+  const [error,setError]=useState("")
+  const [search,setSearch]= useState("")
+  
+  const filteredUsers = users.filter((user)=>{
+    return user.name.toLowerCase().includes(search.toLowerCase())
+  })
+
+  useEffect(()=>{
+  const fetchUsers = async()=> {
+    try{
+    const res = await fetch("https://jsonplaceholder.typicode.com/users")
+      if(!res.ok){
+        throw new Error("Failed to fetch data")
+      }
+      const data =await res.json()
+        setUsers(data);
+        setLoading(false);
+    }
+    catch(error){
+        setError(error.message);
+    }
+    finally{
+        setLoading(false)
+    }
+    }
+    fetchUsers()
+  },[])
+
+  return (
+    <div>
+      <input
+      type="text"
+      placeholder="Search user"
+      value={search}
+      onChange={(e)=>setSearch(e.target.value)}
+      />
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {!loading && !error &&
+      filteredUsers.map((user)=>(
+        <div key={user.id}>
+        <p>{user.name}</p>
+        <p>{user.email}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default App
