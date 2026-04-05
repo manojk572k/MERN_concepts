@@ -483,13 +483,10 @@ Step 6
 Add debounce
 
 Step 7
-
 Split into components:
-
 SearchBox
 UserList
 UserCard
-
 This order is best because each layer builds on the previous one.
 20. Mini summary you can store
 User Directory App is a small React project that fetches users and lets them be searched.
@@ -498,3 +495,16 @@ SearchBox handles only search input UI.
 UserList renders the filtered users.
 UserCard displays one user’s details.
 This project practices React state, effects, props, conditional rendering, filtering, and debouncing.
+
+
+You are here:
+✔ React basics
+✔ Forms
+✔ API
+✔ Debouncing
+✔ Mini project
+
+Next:
+👉 React Router
+👉 Multi-page app
+👉 Better projects
