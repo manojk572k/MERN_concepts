@@ -1,0 +1,34 @@
+covered so far
+
+Here is a clean summary you can store.
+
+React fundamentals covered
+JSX
+useState
+event handling
+controlled inputs
+form submit
+e.preventDefault()
+List and state handling
+array state
+add item using spread
+render list using map
+use of key
+delete item using filter
+clear all items
+derived UI like total count
+Validation and UX
+prevent empty values
+prevent duplicate items
+clear input after successful add
+empty state message
+Styling and UI structure
+flexbox basics
+spacing with gap
+layout separation with container / child sections
+basic button and input styling
+React app thinking
+state updates
+user flow thinking
+mini-project structure
+improving app step by step instead of only syntax
