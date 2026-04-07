@@ -49,8 +49,8 @@ Activity> lets you hide and restore the UI and internal state of its children.
 It is useful when I want to hide something that is likely to come back soon, but I do not want to lose local UI state, such as:
 tab panels
 sidebars
-drafts in forms
-expandable panels
+dra forms
+expandable panelsfts in
 pre-rendered content likely to become visible soon.
 Important caveat
 If the hidden content has useEffect subscriptions, timers, or listeners, React will clean those up while hidden and recreate them when shown again. So preserved state/DOM does not mean effects keep running in the background.

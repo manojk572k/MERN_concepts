@@ -1,6 +1,13 @@
 form {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
-  width: 250px;
+  width: 350px;
+  border: 2px solid grey;
+  padding: 10px;
+}
+P{
+  font-size: small;
+  margin: 0;
 }

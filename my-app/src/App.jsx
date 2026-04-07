@@ -1,54 +1,36 @@
-import { useEffect, useState } from "react";
-import useDebounced from "./InputBox";
+import { useState } from "react"
+import "./App.css"
 function App() {
-  const [users,setUsers]=useState([])
-  const [loading,setLoading]=useState(true)
-  const [error,setError]=useState("")
-  const [search,setSearch]= useState("")
-  
-  const debounced = useDebounced(search,500)
-  const filteredUsers = users.filter((user)=>{
-    return user.name.toLowerCase().includes(debounced.toLowerCase())
-  })
-  useEffect(()=>{
-  const fetchUsers = async()=> {
-    try{
-    const res = await fetch("https://jsonplaceholder.typicode.com/users")
-      if(!res.ok){
-        throw new Error("Failed to fetch data")
-      }
-      const data =await res.json()
-        setUsers(data);
-        setLoading(false);
-    }
-    catch(error){
-        setError(error.message);
-    }
-    finally{
-        setLoading(false)
-    }
-    }
-    fetchUsers()
-  },[])
-
+  const[text,setText]=useState("")
+  const[list,setList]=useState([])
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    if(text.trim()=="")return
+    setList([...list, text])
+    setText("")
+  }
   return (
     <div>
-      <input
-      type="text"
-      placeholder="Search user"
-      value={search}
-      onChange={(e)=>setSearch(e.target.value)}
-      />
-
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {!loading && !error &&
-      filteredUsers.map((user)=>(
-        <div key={user.id}>
-        <p>{user.name}</p>
-        <p>{user.email}</p>
-        </div>
-      ))}
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={text} placeholder="Enter Text" 
+          onChange={(e)=>setText(e.target.value)
+          }
+        />
+        <button type="submit">
+          Enter
+        </button>
+        {list.map((info,index)=>
+          <div key={index}>
+            <p>
+              {info}
+            </p>
+            <button onClick={()=>setList(list.filter((_, i) => i !== index))}>
+              DELETE
+            </button>
+          </div>
+        )
+        }
+      </form>
     </div>
   )
 }
