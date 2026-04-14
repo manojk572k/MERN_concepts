@@ -18,6 +18,12 @@
   border-radius: 8px;
   align-items: center;
 }
+.counts{
+  display: flex;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  justify-content: space-around;
+}
 
 .checkedChild2{
   display: flex;

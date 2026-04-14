@@ -7,11 +7,25 @@ function App() {
     return stored ? JSON.parse(stored) : [];
   })
 
-  // const[object,setObject]=useState({})
+  const [filter, setFilter] = useState(() => {
+    const filterStored = localStorage.getItem("filter")
+    return filterStored ? JSON.parse(filterStored) : "all"
+  })
 
   useEffect(()=>{
     localStorage.setItem("list",JSON.stringify(list));
-  },[list])
+    localStorage.setItem("filter",JSON.stringify(filter));
+  },[list, filter])
+
+  const filteredUsers = list.filter((item) => {
+   if(filter=="active"){
+    return item.isCompleted === false
+   } 
+   else if(filter == "completed"){
+    return item.isCompleted === true
+   }
+   return true
+  })
 
   const handleSubmit=(e)=>{
     e.preventDefault()
@@ -25,7 +39,7 @@ function App() {
 
     setList((prevList)=>{
       const update=[...prevList, newTodao]
-      return [...new Set(update)]
+      return update
       })
     setText("")
   }
@@ -64,13 +78,31 @@ function App() {
           Enter
         </button>
         {list.length===0 ?<p>No items added</p>
-         : <p>Total items :{list.length}</p>
+         : <p>Total items : {list.length}</p>
         }
+        <button type="button" onClick={()=>setFilter("all")}>
+          ALL
+        </button>
+        <button type="button" onClick={()=>setFilter("active")}>
+          Active
+        </button>
+        <button type="button" onClick={()=>{setFilter("completed")}}>
+          Completed
+        </button>
         <button type="button" onClick={handleClearALL}>
           Clear ALL
         </button>
         </div>
-        {list.map((info,index)=>
+        
+        <div className="counts">
+        <p>Total: {list.length}</p>
+        <p>Active: {list.filter(item=>!item.isCompleted).length}</p>
+        <p>Completed: {list.filter(item=>item.isCompleted).length}</p>
+        </div>
+        
+
+        {filteredUsers.map((info,index)=>
+
           <div key={info.id} className={info.isCompleted ? "checkedChild2" : "unCheckedChild2"}>
             <p>{info.id}</p>
             <p>{info.textofTodo}</p>
@@ -88,6 +120,7 @@ function App() {
           </div>
         )
         }
+
       </form>
     </div>
       </div>
