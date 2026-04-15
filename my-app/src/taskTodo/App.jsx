@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
+
+import TodoInput from "./TodoInput" 
 import "./App.css"
+import TodoList from "./TodoList"
 function App() {
   const[text,setText]=useState("")
   const[list,setList]=useState(()=>{
@@ -64,7 +67,7 @@ function App() {
   }
 
   const handleDelete =(id)=>{
-    setList((prevList)=>prevList.filter((k,i)=> k!==id))
+    setList((prevList)=>prevList.filter((k)=> k.id!==id))
   }
 
   const handleClearALL=()=>{
@@ -104,30 +107,15 @@ function App() {
         <h2>Todo List</h2>
       <div className="container">
       <form onSubmit={handleSubmit}>
-        <div className="childOne">
-        <input type="text" value={text} placeholder="Enter Text" 
-          onChange={(e)=>setText(e.target.value)
-          }
+      
+        <TodoInput
+            Todotext={text}
+            statesetText={setText}
+            TodoList={list}
+            TodoFilter={filter}
+            statesetFilter={setFilter}
+            TodoHandleClearALL={handleClearALL}
         />
-        <button type="submit">
-          Enter
-        </button>
-        {list.length===0 ?<p>No items added</p>
-         : <p>Total items : {list.length}</p>
-        }
-        <button type="button" className={`filter all ${filter === "all" ? "all" : ""}`} onClick={()=>setFilter("all")}>
-          ALL
-        </button>
-        <button type="button" className={`filter active ${filter === "active" ? "active" : ""}`} onClick={()=>setFilter("active")}>
-          Active
-        </button>
-        <button type="button" className={`filter completed ${filter === "completed" ? "completed" : ""}`}  onClick={()=>{setFilter("completed")}}>
-          Completed
-        </button>
-        <button type="button" onClick={handleClearALL}>
-          Clear ALL
-        </button>
-        </div>
         
         <div className="counts">
         <p>Total: {list.length} </p>
@@ -135,36 +123,14 @@ function App() {
         <p>Completed: {list.filter(item=>item.isCompleted).length}</p>
         </div>
         
-
-        {filteredList.map((info)=>
-
-          <div key={info.id} className={info.isCompleted ? "checkedChild2" : "unCheckedChild2"}>
-            <div
-                className={`childTwo 
-                  ${info.isCompleted ? "done" : "pending"} 
-                  ${filter === "completed" ? "completedView" : ""}
-                  ${filter === "active" ? "activeView" : ""}
-                `}
-              >
-            <p>{info.textofTodo}</p>
-            <input 
-             type="checkbox" 
-             checked={info.isCompleted}
-             onChange={() => handleToggle(info.id)}
-            />
-            <button type="button" onClick={()=>handleEdit(info)} >
-            UPDATE
-            </button>
-            <button type="button" onClick={()=>handleDelete(info)}>
-            DELETE
-            </button>
-              </div>
-          </div>
-        )
-        }
-        {filteredList.length === 0 && (
-        <p className="emptyMessage">{todoMessage()}</p>
-          )}
+          <TodoList 
+          TodoFilterList={filteredList}
+          TodoFilter={filter}
+          TodohandleToggle={handleToggle}
+          TodohandleEdit={handleEdit}
+          TodohandleDelete={handleDelete}
+          TodotodoMessage={todoMessage}
+          />
 
       </form>
     </div>
