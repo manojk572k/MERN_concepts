@@ -10,6 +10,29 @@
   justify-content: center;
   margin-top: 50px;
 }
+.childTwo {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+.done {
+  text-decoration: line-through;
+  color: #888;
+  opacity: 0.6;
+}
+.pending {
+  color: #000;
+  font-weight: 500;
+}
+.activeView {
+  background: #fff3e0; /* light orange */
+}
+.completedView {
+  background: #e8f5e9; /* light green */
+}
+
 .childOne {
   display: flex;
   gap: 10px;
@@ -26,24 +49,28 @@
 }
 
 .checkedChild2{
-  display: flex;
-  justify-content: space-between;
+
   align-items: center;
-  margin-top: 10px;
-  padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 8px;
   background-color: #ccc;
   text-decoration: line-through;
   color: #888;
 }
 
+.filter.all{
+  background: #2196f3;
+}
+
+.active{
+  background:  #ff9800;
+}
+
+.completed{
+  background: #e63d53;
+}
+
 .unCheckedChild2 {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
-  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
 }
@@ -68,4 +95,7 @@ button {
 }
 button:hover {
   background-color: #45a049;
+}
+.emptyMessage{
+  font-size: medium;
 }

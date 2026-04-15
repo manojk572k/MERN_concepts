@@ -17,14 +17,14 @@ function App() {
     localStorage.setItem("filter",JSON.stringify(filter));
   },[list, filter])
 
-  const filteredUsers = list.filter((item) => {
-   if(filter=="active"){
+  const filteredList = list.filter((item) => {
+   if(filter==="active"){
     return item.isCompleted === false
    } 
-   else if(filter == "completed"){
-    return item.isCompleted === true
+   else if(filter === "completed"){
+    return item.isCompleted === true 
    }
-   return true
+   return true 
   })
 
   const handleSubmit=(e)=>{
@@ -44,8 +44,8 @@ function App() {
     setText("")
   }
   
-  const handleDelete =(index)=>{
-    setList((prevList)=>prevList.filter((_,i)=> i!==index))
+  const handleDelete =(id)=>{
+    setList((prevList)=>prevList.filter((k,i)=> k!==id))
   }
 
   const handleClearALL=()=>{
@@ -62,7 +62,23 @@ function App() {
       )
       )
   }
-  console.log(list)
+ const todoMessage = () => {
+  if (list.length === 0) {
+    return "No todos added"
+  }
+
+  if (filter === "active" && filteredList.length === 0) {
+    return "No active tasks"
+  }
+
+  if (filter === "completed" && filteredList.length === 0) {
+    return "No completed tasks"
+  }
+
+  return ""
+  }
+
+
 
   return (
       <div className="body">
@@ -80,13 +96,13 @@ function App() {
         {list.length===0 ?<p>No items added</p>
          : <p>Total items : {list.length}</p>
         }
-        <button type="button" onClick={()=>setFilter("all")}>
+        <button type="button" className={`filter all ${filter === "all" ? "all" : ""}`} onClick={()=>setFilter("all")}>
           ALL
         </button>
-        <button type="button" onClick={()=>setFilter("active")}>
+        <button type="button" className={`filter active ${filter === "active" ? "active" : ""}`} onClick={()=>setFilter("active")}>
           Active
         </button>
-        <button type="button" onClick={()=>{setFilter("completed")}}>
+        <button type="button" className={`filter completed ${filter === "completed" ? "completed" : ""}`}  onClick={()=>{setFilter("completed")}}>
           Completed
         </button>
         <button type="button" onClick={handleClearALL}>
@@ -95,16 +111,22 @@ function App() {
         </div>
         
         <div className="counts">
-        <p>Total: {list.length}</p>
-        <p>Active: {list.filter(item=>!item.isCompleted).length}</p>
+        <p>Total: {list.length} </p>
+        <p>Active: {list.filter(item=>!item.isCompleted).length }</p>
         <p>Completed: {list.filter(item=>item.isCompleted).length}</p>
         </div>
         
 
-        {filteredUsers.map((info,index)=>
+        {filteredList.map((info,index)=>
 
           <div key={info.id} className={info.isCompleted ? "checkedChild2" : "unCheckedChild2"}>
-            <p>{info.id}</p>
+            <div
+                className={`childTwo 
+                  ${info.isCompleted ? "done" : "pending"} 
+                  ${filter === "completed" ? "completedView" : ""}
+                  ${filter === "active" ? "activeView" : ""}
+                `}
+              >
             <p>{info.textofTodo}</p>
             <input 
              type="checkbox" 
@@ -114,12 +136,16 @@ function App() {
             <button type="button" >
             UPDATE
             </button>
-            <button type="button" onClick={()=>handleDelete(index)}>
+            <button type="button" onClick={()=>handleDelete(info)}>
             DELETE
             </button>
+              </div>
           </div>
         )
         }
+        {filteredList.length === 0 && (
+        <p className="emptyMessage">{todoMessage()}</p>
+          )}
 
       </form>
     </div>
