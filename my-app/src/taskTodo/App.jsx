@@ -12,10 +12,16 @@ function App() {
     return filterStored ? JSON.parse(filterStored) : "all"
   })
 
+  const [editId,setEditId] = useState(()=>{
+    const stored = localStorage.getItem("editId");
+    return stored ? JSON.parse(stored) : null;
+  })
+
   useEffect(()=>{
     localStorage.setItem("list",JSON.stringify(list));
     localStorage.setItem("filter",JSON.stringify(filter));
-  },[list, filter])
+    localStorage.setItem("editId",JSON.stringify(editId));
+  },[list, filter ,editId])
 
   const filteredList = list.filter((item) => {
    if(filter==="active"){
@@ -31,19 +37,32 @@ function App() {
     e.preventDefault()
     if(text.trim()=="")return
 
-    const newTodao ={
+    if (editId !== null) {
+    setList((prevList) =>
+      prevList.map((item) =>
+        item.id === editId
+          ? { ...item, textofTodo: text }
+          : item
+      )
+    )
+    setEditId(null)
+  } else {
+    const newTodo ={
       id:Date.now(),
       textofTodo:text,
       isCompleted:false
     }
-
-    setList((prevList)=>{
-      const update=[...prevList, newTodao]
-      return update
-      })
+    setList((prevList) => [...prevList, newTodo])
+  }
     setText("")
   }
   
+    const handleEdit =(todo)=>{
+       setText(todo.textofTodo)
+      setEditId(text)
+      setEditId(todo.id)
+  }
+
   const handleDelete =(id)=>{
     setList((prevList)=>prevList.filter((k,i)=> k!==id))
   }
@@ -117,7 +136,7 @@ function App() {
         </div>
         
 
-        {filteredList.map((info,index)=>
+        {filteredList.map((info)=>
 
           <div key={info.id} className={info.isCompleted ? "checkedChild2" : "unCheckedChild2"}>
             <div
@@ -133,7 +152,7 @@ function App() {
              checked={info.isCompleted}
              onChange={() => handleToggle(info.id)}
             />
-            <button type="button" >
+            <button type="button" onClick={()=>handleEdit(info)} >
             UPDATE
             </button>
             <button type="button" onClick={()=>handleDelete(info)}>
