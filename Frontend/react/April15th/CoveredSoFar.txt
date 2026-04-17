@@ -1,0 +1,136 @@
+API Mini Project (Frontend)
+API-based React App
+
+Random search → no match → filter removes all → []
+→ length becomes 0
+→ UI shows "No users found"
+
+
+1. API Fetching (useEffect)
+Definition
+
+Fetching data from an external source when the component loads.
+
+In your code
+useEffect(() => {
+  // fetch users
+}, [])
+Meaning
+Run once → call API → store data in state
+2. Async/Await
+Definition
+
+A way to handle asynchronous operations in a readable manner.
+
+In your code
+const res = await fetch(...)
+const data = await res.json()
+Meaning
+Wait for API → then continue execution
+3. State Management (useState)
+Definition
+
+Stores and manages dynamic data inside a component.
+
+Your states
+users → API data  
+loading → request status  
+error → error message  
+search → user input  
+4. Loading State
+Definition
+
+Tracks whether the API request is still in progress.
+
+In your code
+{loading && <p>Loading...</p>}
+Meaning
+Show loading UI while data is being fetched
+5. Error Handling
+Definition
+
+Handling failures when API request fails.
+
+In your code
+{error && <p>{error}</p>}
+Meaning
+If API fails → show error message
+6. Controlled Input
+Definition
+
+Input field whose value is controlled by React state.
+
+In your code
+<input value={search} onChange={handleInput} />
+Meaning
+UI input ↔ React state are always synced
+7. Filtering Data (filter)
+Definition
+
+Creates a new array based on a condition.
+
+In your code
+user.filter(...)
+Meaning
+Return only users that match search
+8. Derived State
+Definition
+
+State that is computed from another state.
+
+In your code
+const filteredUsers = ...
+Meaning
+filteredUsers is NOT stored, it is calculated
+9. Search Logic (Case-Insensitive)
+Definition
+
+Matching text regardless of uppercase/lowercase.
+
+In your code
+.toLowerCase().includes(...)
+Meaning
+"Leanne" === "leanne"
+10. OR Condition in Filtering
+Definition
+
+Matching multiple fields using logical OR.
+
+In your code
+name OR email
+Meaning
+Match if ANY condition is true
+11. Conditional Rendering (&&)
+Definition
+
+Render UI only when condition is true.
+
+In your code
+{loading && <p>Loading...</p>}
+Meaning
+If condition true → show UI
+Else → show nothing
+12. Empty State UI
+Definition
+
+UI shown when no data matches.
+
+In your code
+{search && filteredUsers.length === 0 && <p>No users found</p>}
+Meaning
+No matches → show helpful message
+13. List Rendering (map)
+Definition
+
+Rendering arrays as UI elements.
+
+In your code
+filteredUsers.map(...)
+Meaning
+Convert array → UI list
+🧠 Where you are now
+✔ React fundamentals
+✔ Todo App (CRUD + state + components)
+✔ API Fetching
+✔ Search + filtering
+➡ Entering intermediate React

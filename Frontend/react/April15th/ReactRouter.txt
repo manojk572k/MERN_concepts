@@ -1,6 +1,0 @@
-API Mini Project (Frontend)
-API-based React App
-
-Random search → no match → filter removes all → []
-→ length becomes 0
-→ UI shows "No users found"

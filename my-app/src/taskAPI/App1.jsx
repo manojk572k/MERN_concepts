@@ -4,16 +4,25 @@ import './App1.css'
 function App1() {
 
   const[error,setError]=useState("")
-  const[user,setUser]=useState([])
+  const[users,setUsers]=useState([])
   const[loading,setLoading]=useState(true)
   const [search,setSearch]= useState("")
+  const [debounce,setDebounce]=useState("")
 
-
-  const filteredUsers = user.filter((user)=>
-     user.name.toLowerCase().includes(search.toLowerCase()) || user.email.toLowerCase().includes(search.toLowerCase())
+  const filteredUsers = users.filter((user)=>
+     user.name.toLowerCase().includes(debounce.toLowerCase()) || user.email.toLowerCase().includes(debounce.toLowerCase())
   )
 
-useEffect(()=>{
+  useEffect(()=>{
+    const timer =setTimeout(()=>{
+        setDebounce(search)
+    },500)
+    return ()=>{
+      clearTimeout(timer)
+    }
+    },[search]) 
+
+  useEffect(()=>{
   const ApiFetchUser = async()=>{
     try{
       const res = await fetch("https://jsonplaceholder.typicode.com/users")
@@ -21,7 +30,7 @@ useEffect(()=>{
         throw new Error("Failed to Fetch")
       }
       const data = await res.json()
-      setUser(data)
+      setUsers(data)
     }
     catch(error){
       setError(error.message)
@@ -38,18 +47,18 @@ useEffect(()=>{
   }
 
   return (
-    <div>
+    <div className="container">
       <input
         type="text"
         placeholder="Search user"
         value={search}
         onChange={handleInput}
       />
-
+      <div className="cards">
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
         {filteredUsers.map((Users)=>(
-          <div key={Users.id}>
+          <div key={Users.id} className="items">
              <p>{Users.name}</p> 
              <p>{Users.email}</p> 
           </div>
@@ -59,7 +68,7 @@ useEffect(()=>{
           <p>No users found</p>
         )}
     </div>
+    </div>
   )
 }
-
 export default App1
